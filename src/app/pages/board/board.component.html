@@ -1,0 +1,50 @@
+<div class="flex flex-col h-screen">
+  <app-navbar></app-navbar>
+  <div class="w-full grow bg-sky-600 px-4 pb-4">
+    <div class="flex flex-col h-full">
+      <div>
+        <h2 class="text-xl font-bold text-white my-4">Demo Board</h2>
+      </div>
+      <div
+        class="flex grow items-start w-full h-full overflow-x-scroll"
+        cdkDropListGroup
+        cdkDropListOrientation="horizontal"
+        cdkDropList
+        [cdkDropListData]="columns"
+        (cdkDropListDropped)="dropColumn($event)"
+      >
+        @for (column of columns; track column) {
+          <div class="rounded bg-gray-200 w-72 p-2 mr-3 shrink-0" cdkDrag>
+            <div class="flex justify-between py-1">
+              <h3 class="text-sm font-bold ml-2">{{ column.title }}</h3>
+            </div>
+            <div
+              cdkDropList
+              class="text-sm mt-2 min-h-[2.5rem]"
+              [cdkDropListData]="column.todoList"
+              (cdkDropListDropped)="drop($event)"
+            >
+              @for (todoTask of column.todoList; track todoTask) {
+                <div
+                  cdkDrag
+                  (click)="openDialog(todoTask)"
+                  class="bg-white shadow p-2 rounded mt-2 border-b border-x-gray-300 cursor-pointer hover:bg-gray-400"
+                >
+                  {{ todoTask.title }}
+                </div>
+              }
+              <button
+                cdk
+                class="bg-gray-200 w-full text-left p-2 rounded mt-2 border-1 border-gray-400 cursor-pointer hover:bg-gray-400"
+                (click)="addTask(column.todoList)"
+              >
+                + Add new task
+              </button>
+            </div>
+          </div>
+        }
+        <button (click)="addColumn()" class="shrink-0">Add Column</button>
+      </div>
+    </div>
+  </div>
+</div>
